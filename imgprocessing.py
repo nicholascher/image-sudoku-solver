@@ -9,7 +9,6 @@ import solver
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 
-
 def fix_square(countours):
 
   # Returns the four corners of the square and returns it as a 4 x 2 arr in the order
@@ -91,43 +90,33 @@ def split_cells(img_name):
 
   smooth = cv2.GaussianBlur(warped_img,(3,3),3)
   thresh = cv2.adaptiveThreshold(smooth,255,0,1,5,2)
+
+  # thresh = cv2.adaptiveThreshold(smooth, 252, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 31, 61)
   kernel = cv2.getStructuringElement(cv2.MORPH_CROSS,(3,3))
   erode = cv2.erode(thresh,kernel,iterations =1)
   dilate =cv2.dilate(erode,kernel,iterations =1)
 
-  contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+  for i in range(0, 9):
+    for j in range(0, 9):
 
-  count = 0
+      roi = dilate[i * 50 + 8: i * 50 + 45, j * 50 + 12: j * 50 + 40]
 
-  cv2.imshow("test", erode)
-  cv2.waitKey(0)
-  cv2.destroyAllWindows
+      # cv2.imshow("test", roi)
+      # cv2.waitKey(0)
+      # cv2.destroyAllWindows
 
-  for cnt in contours:
-    area = cv2.contourArea(cnt)
-
-    if 100 < area < 1200:
       
-      # Find the chars
+      number = pytesseract.image_to_string(roi, config="--psm 10")
 
-      x, y, w, h = cv2.boundingRect(cnt)
-      roi = dilate[y:y + h, x:x + w]
+      number = ''.join(filter(str.isdigit, number))
 
-      # config for tesseract to detect the thing as one char
+      if not number:
+          number = '0'
 
-      config=("-c tessedit"
-                  "_char_whitelist=0123456789"
-                  " --psm 10"
-                  " -l osd"
-                  " ")
-      number = pytesseract.image_to_string(roi, config=config) 
       
-      # Based on the pos of the char, place it in the arr
-      gridy , gridx = (x + w / 2) / 50,(y + h / 2) / 50	
 
-      board.itemset((int(gridx), int(gridy)), int(number))
-  
-  solver.printBoard(board)
-  solver.solve(board)
+      board[i][j] = int(number)
+      
+  return board
 
-split_cells("test2.png")
+
