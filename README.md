@@ -39,11 +39,11 @@ To use this Sudoku Solver, follow these steps:
 
 ## Usage
 
-1. Ensure you have an image file containing a Sudoku puzzle.
-2. Run the `sudoku_solver.py` script:
+1. Ensure you have an image file containing a Sudoku puzzle in the `Inputs` folder.
+2. Run the `sudoku.py` script:
 
    ```bash
-   python sudoku_solver.py --image puzzle_image.png
+   python sudoku.py puzzle_image.png
    ```
 
    Replace `puzzle_image.png` with the path to your Sudoku puzzle image. Note that the image should be in the `Inputs` folder.
@@ -74,8 +74,9 @@ To use this Sudoku Solver, follow these steps:
 ## Example
 
 ```bash
-python sudoku_solver.py --image sudoku_puzzle.png
+python sudoku.py sudoku_puzzle.png
 ```
+Note that the image should be placed in the `Inputs` folder.
 
 Output:
 
