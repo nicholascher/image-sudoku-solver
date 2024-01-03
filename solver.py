@@ -109,7 +109,4 @@ def solveBoard(board):
 
   return False
 
-
-solve(unsolvable_board)
-
       

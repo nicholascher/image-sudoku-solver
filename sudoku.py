@@ -10,7 +10,7 @@ def editBoard(board, x, y, newValue):
 
 def isValidInput(x, y, value):
 
-  if x > 9 or x < 0 or y > 9 or y < 0 or value > 9 or value < 0: 
+  if x > 8 or x < 0 or y > 8 or y < 0 or value > 9 or value < 0: 
     print("Invalid inputs! ")
     return False
   else:
@@ -29,11 +29,13 @@ def checkBoard(board):
     isValid = False
 
     while not isValid:
+
+      print("Note: The rows and columns start from 1")
        
       x, y, value = input("Enter the x, y coordinates followed by the correct value (separated by space): ").split()
 
-      x = int(x)
-      y = int(y)
+      x = int(x) - 1
+      y = int(y) - 1
       value = int(value)
 
       isValid = isValidInput(x, y, value)
